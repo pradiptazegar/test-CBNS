@@ -47,11 +47,7 @@ main (int argc, char *argv[])
     uint32_t SentPackets = 0;
     uint32_t ReceivedPackets = 0;
     uint32_t LostPackets = 0;
-    uint16_t numPings = 20;
-    uint16_t pingTime = 10;
-
-
-
+    
     // Configure command line parameters
     CommandLine cmd;
     cmd.AddValue ("simTime", "Simulation time (seconds)", simTime);
@@ -111,7 +107,7 @@ main (int argc, char *argv[])
         hostDevices.Add (pairDevs.Get (0));
         switchPorts [i].Add (pairDevs.Get (1));
     }
-    
+
     // Connect the switches
     pair = NodeContainer (switches.Get (0), switches.Get (1));
     pairDevs = csmaHelper.Install (pair);
@@ -143,29 +139,11 @@ main (int argc, char *argv[])
     ipv4helpr.SetBase ("10.1.1.0", "255.255.255.0");
     hostIpIfaces = ipv4helpr.Assign (hostDevices);
 
-    // Random number generators for ping applications
-    Ptr<UniformRandomVariable> randomHostRng = CreateObject<UniformRandomVariable> ();
-    randomHostRng->SetAttribute ("Min", DoubleValue (0));
-    randomHostRng->SetAttribute ("Max", DoubleValue (numHosts - 1));
-
-    Ptr<ExponentialRandomVariable> randomStartRng = CreateObject<ExponentialRandomVariable> ();
-    randomStartRng->SetAttribute ("Mean", DoubleValue (20));
-
-    // Configure ping application between random hosts
-    Time startTime = Seconds (1);
-    for (int i = 0; i < numPings; i++)
-    {
-        int srcHost = randomHostRng->GetInteger ();
-        int dstHost = randomHostRng->GetInteger ();
-
-        V4PingHelper pingHelper = V4PingHelper (hostIpIfaces.GetAddress (dstHost));
-        pingHelper.SetAttribute ("Verbose", BooleanValue (true));
-        Ptr<Application> pingApp = pingHelper.Install (hosts.Get (srcHost)).Get (0);
-
-        startTime += Seconds (std::abs (randomStartRng->GetValue ()));
-        pingApp->SetStartTime (startTime);
-        pingApp->SetStopTime (startTime + Seconds (pingTime));
-    }
+    // Configure ping application between hosts
+    V4PingHelper pingHelper = V4PingHelper (hostIpIfaces.GetAddress (1));
+    pingHelper.SetAttribute ("Verbose", BooleanValue (true));
+    ApplicationContainer pingApps = pingHelper.Install (hosts.Get (0));
+    pingApps.Start (Seconds (1));
 
     // Enable datapath stats and pcap traces at hosts, switch(es), and controller(s)
     if (trace)
