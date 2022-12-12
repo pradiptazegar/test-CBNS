@@ -137,14 +137,12 @@ main(int argc, char* argv[])
     internet.Install(hosts);
 
     // Set IPv4 host addresses
-    NS_LOG_INFO ("Assign IP Addresses.");
     Ipv4AddressHelper ipv4;
     ipv4.SetBase ("10.1.1.0", "255.255.255.0");
     ipv4.Assign (hostDevices);
     
     
     // Create an OnOff application to send UDP datagrams from n0 to n1.
-    NS_LOG_INFO ("Create Applications.");
     uint16_t port = 9;   // Discard port (RFC 863)
     OnOffHelper onoff ("ns3::TcpSocketFactory",
                        Address (InetSocketAddress (Ipv4Address ("10.1.1.4"), port)));
