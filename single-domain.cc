@@ -136,23 +136,22 @@ main(int argc, char* argv[])
     internet.Install(hosts);
 
     // Set IPv4 host addresses
-    Ipv4AddressHelper ipv4helpr;
-    Ipv4InterfaceContainer hostIpIfaces;
-    ipv4helpr.SetBase("10.1.1.0", "255.255.255.0");
-    hostIpIfaces = ipv4helpr.Assign(hostDevices);
+    NS_LOG_INFO ("Assign IP Addresses.");
+    Ipv4AddressHelper ipv4;
+    ipv4.SetBase ("10.1.1.0", "255.255.255.0");
+    ipv4.Assign (hostDevices);
     
+    
+    // Create an OnOff application to send UDP datagrams from n0 to n1.
     NS_LOG_INFO ("Create Applications.");
     uint16_t port = 9;   // Discard port (RFC 863)
-
-    for (int i = 0; i < 20; ++i) {
-        OnOffHelper onoff ("ns3::TcpSocketFactory",
-        Address (InetSocketAddress (Ipv4Address ("10.1.1.3"), port)));
-        onoff.SetConstantRate (DataRate ("1kb/s"));
-        ApplicationContainer app = onoff.Install (terminals.Get (i));
-        // Start the application
-        app.Start (Seconds (1.0));
-        app.Stop (Seconds (10.0));
-    }
+    OnOffHelper onoff ("ns3::TcpSocketFactory",
+                       Address (InetSocketAddress (Ipv4Address ("10.1.1.4"), port)));
+    onoff.SetConstantRate (DataRate ("100kb/s"));
+    ApplicationContainer app = onoff.Install (terminals.Get (0));
+    // Start the application
+    app.Start (Seconds (1.0));
+    app.Stop (Seconds (10.0));
     
 
     // Enable datapath stats and pcap traces at hosts, switch(es), and controller(s)
