@@ -144,7 +144,7 @@ main(int argc, char* argv[])
     NS_LOG_INFO ("Create Applications.");
     uint16_t port = 9;   // Discard port (RFC 863)
 
-    for (int i = 0; i < terminals.GetN(); ++i) {
+    for (int i = 0; i < 20; ++i) {
         OnOffHelper onoff ("ns3::TcpSocketFactory",
         Address (InetSocketAddress (Ipv4Address ("10.1.1.3"), port)));
         onoff.SetConstantRate (DataRate ("1kb/s"));
