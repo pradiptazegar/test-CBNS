@@ -37,6 +37,7 @@
 #include <ns3/internet-module.h>
 #include <ns3/network-module.h>
 #include <ns3/ofswitch13-module.h>
+#include <ns3/applications-module.h>
 
 using namespace ns3;
 
