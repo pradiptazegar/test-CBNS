@@ -95,19 +95,17 @@ main (int argc, char *argv[])
     switchPorts [0] = NetDeviceContainer ();
     switchPorts [1] = NetDeviceContainer ();
     
-    for (int i = 0; i < 10; i++) {
-    pair = NodeContainer(hosts.Get(i), switches.Get(0));
+    // Connect host 0 to first switch
+    pair = NodeContainer(hosts.Get(0), switches.Get(0));
     pairDevs = csmaHelper.Install(pair);
     hostDevices.Add(pairDevs.Get(0));
-    switchPorts[i].Add(pairDevs.Get(1));
-    }
-        
-    for (int i = 10; i < 20; i++) {
-    pair = NodeContainer(hosts.Get(i), switches.Get(1));
+    switchPorts[0].Add(pairDevs.Get(1));
+
+    // Connect host 1 to second switch
+    pair = NodeContainer(hosts.Get(1), switches.Get(1));
     pairDevs = csmaHelper.Install(pair);
     hostDevices.Add(pairDevs.Get(0));
-    switchPorts[i].Add(pairDevs.Get(1));
-    }
+    switchPorts[1].Add(pairDevs.Get(1));
     
     // Connect the switches
     pair = NodeContainer (switches.Get (0), switches.Get (1));
