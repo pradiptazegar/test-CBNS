@@ -140,12 +140,20 @@ main(int argc, char* argv[])
     Ipv4InterfaceContainer hostIpIfaces;
     ipv4helpr.SetBase("10.1.1.0", "255.255.255.0");
     hostIpIfaces = ipv4helpr.Assign(hostDevices);
+    
+    NS_LOG_INFO ("Create Applications.");
+    uint16_t port = 9;   // Discard port (RFC 863)
 
-    // Configure ping application between hosts
-    V4PingHelper pingHelper = V4PingHelper(hostIpIfaces.GetAddress(1));
-    pingHelper.SetAttribute("Verbose", BooleanValue(true));
-    ApplicationContainer pingApps = pingHelper.Install(hosts.Get(0));
-    pingApps.Start(Seconds(1));
+    for (int i = 0; i < terminals.GetN(); ++i) {
+        OnOffHelper onoff ("ns3::TcpSocketFactory",
+        Address (InetSocketAddress (Ipv4Address ("10.1.1.3"), port)));
+        onoff.SetConstantRate (DataRate ("1kb/s"));
+        ApplicationContainer app = onoff.Install (terminals.Get (i));
+        // Start the application
+        app.Start (Seconds (1.0));
+        app.Stop (Seconds (10.0));
+    }
+    
 
     // Enable datapath stats and pcap traces at hosts, switch(es), and controller(s)
     if (trace)
