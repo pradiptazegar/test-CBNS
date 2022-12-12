@@ -147,7 +147,7 @@ main(int argc, char* argv[])
     OnOffHelper onoff ("ns3::TcpSocketFactory",
                        Address (InetSocketAddress (Ipv4Address ("10.1.1.4"), port)));
     onoff.SetConstantRate (DataRate ("100kb/s"));
-    ApplicationContainer app = onoff.Install (terminals.Get (0));
+    ApplicationContainer app = onoff.Install (hosts.Get (0));
     // Start the application
     app.Start (Seconds (1.0));
     app.Stop (Seconds (10.0));
