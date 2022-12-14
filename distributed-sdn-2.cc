@@ -1,11 +1,3 @@
- *
- *            Learning Controller   Learning Controller
- *                    |                     |
- *               +----------+          +----------+
- *    Host 0 === | Switch 0 | ======== | Switch 1 | === Host 1
- *               +----------+          +----------+
- */
-
 #include <ns3/core-module.h>
 #include <ns3/csma-module.h>
 #include <ns3/internet-apps-module.h>
@@ -185,5 +177,6 @@ main(int argc, char* argv[])
     NS_LOG_UNCOND("End to End Delay =" << Delay);
     NS_LOG_UNCOND("End to End Jitter delay =" << Jitter);
     NS_LOG_UNCOND("Total Flod id " << j);
-    monitor->SerializeToXmlFile("manet-routing.xml", true, true);    Simulator::Destroy();
+    monitor->SerializeToXmlFile("manet-routing.xml", true, true);   
+    Simulator::Destroy();
 }
