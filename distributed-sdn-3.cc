@@ -5,6 +5,7 @@
 #include <ns3/network-module.h>
 #include <ns3/ofswitch13-module.h>
 #include <ns3/flow-monitor-module.h>
+#include <ns3/applications-module.h>
 
 using namespace ns3;
 
