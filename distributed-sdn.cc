@@ -19,7 +19,7 @@ using namespace ns3;
 int
 main(int argc, char* argv[])
 {
-    uint16_t simTime = 10;
+    uint16_t simTime = 1000;
     bool verbose = false;
     bool trace = false;
     uint32_t SentPackets = 0;
@@ -116,8 +116,8 @@ main(int argc, char* argv[])
     // Create an OnOff application to send UDP datagrams from n0 to n1.
     uint16_t port = 9;   // Discard port (RFC 863)
     OnOffHelper onoff ("ns3::TcpSocketFactory",
-                       Address (InetSocketAddress (Ipv4Address ("10.1.1.4"), port)));
-    onoff.SetConstantRate (DataRate ("100kb/s"));
+                       Address (InetSocketAddress (Ipv4Address ("10.1.1.7"), port)));
+    onoff.SetConstantRate (DataRate ("10kb/s"));
     ApplicationContainer app = onoff.Install (hosts.Get (0));
     // Start the application
     app.Start (Seconds (1.0));
