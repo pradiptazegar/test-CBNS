@@ -17,13 +17,6 @@ uint32_t SentPackets = 0;
 uint32_t ReceivedPackets = 0;
 uint32_t LostPackets = 0;
 
-void
-CheckQueueSize (std::string context, uint32_t before, uint32_t after)
-{
-  std::cout << YELLOW_CODE << context << END_CODE << std::endl;
-  std::cout << "\tTxQueue Size = " << after << std::endl;
-}
-
 
 void ClientTx (std::string context, Ptr<const Packet> packet)
 {
