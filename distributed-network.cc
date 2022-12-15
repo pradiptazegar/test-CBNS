@@ -141,17 +141,6 @@ main (int argc, char *argv[])
   //For routers to be able to forward packets, they need to have routing rules.
   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
-  csma1.EnablePcap("lan1", lan1Devices);
-  csma2.EnablePcap("lan2", lan2Devices);
-  pointToPoint.EnablePcapAll("routers");
-  pointToPoint.EnableAscii("ascii-p2p", router_nodes);
-
-  Config::Connect("/NodeList/*/ApplicationList/*/$ns3::UdpEchoClient/Tx", MakeCallback(&ClientTx));
-  Config::Connect("/NodeList/*/ApplicationList/*/$ns3::UdpEchoClient/Rx", MakeCallback(&ClientRx));
-  //Config::Connect("/NodeList/*/ApplicationList/*/$ns3::UdpEchoServer/Tx", MakeCallback(&ServerTx));
-  Config::Connect("/NodeList/*/ApplicationList/*/$ns3::UdpEchoServer/Rx", MakeCallback(&ServerRx));
-
-
 
   Simulator::Stop (Seconds (20));
   FlowMonitorHelper flowmon;
