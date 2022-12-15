@@ -9,20 +9,6 @@
 
 using namespace ns3;
 
-//For colorful console printing
-/*
- * Usage example :
- *    std::cout << BOLD_CODE << "some bold text << END_CODE << std::endl;
- *
- *    std::cout << YELLOW_CODE << BOLD_CODE << "some bold yellow text << END_CODE << std::endl;
- *
- */
-#define YELLOW_CODE "\033[33m"
-#define TEAL_CODE "\033[36m"
-#define BOLD_CODE "\033[1m"
-#define RED_CODE "\033[91m"
-#define END_CODE "\033[0m"
-
 uint32_t total_client_tx = 0;
 uint32_t total_client_rx = 0;
 uint32_t total_server_tx = 0;
@@ -38,16 +24,6 @@ CheckQueueSize (std::string context, uint32_t before, uint32_t after)
   std::cout << "\tTxQueue Size = " << after << std::endl;
 }
 
-void
-BackoffTrace (std::string context, Ptr<const Packet> packet)
-{
-  std::cout << YELLOW_CODE << context << END_CODE << std::endl;
-  EthernetHeader hdr;
-  if (packet->PeekHeader (hdr))
-    {
-      std::cout << "\t" << Now() <<  " Packet from " << hdr.GetSource () << " to " << hdr.GetDestination () << " is experiencing backoff" << std::endl;
-    }
-}
 
 void ClientTx (std::string context, Ptr<const Packet> packet)
 {
@@ -169,12 +145,6 @@ main (int argc, char *argv[])
   csma2.EnablePcap("lan2", lan2Devices);
   pointToPoint.EnablePcapAll("routers");
   pointToPoint.EnableAscii("ascii-p2p", router_nodes);
-
-  //Config::Connect("/NodeList/*/DeviceList/*/$ns3::PointToPointNetDevice/TxQueue/PacketsInQueue", MakeCallback(&CheckQueueSize));
-  //Config::Connect("/NodeList/*/DeviceList/*/$ns3::CsmaNetDevice/TxQueue/PacketsInQueue", MakeCallback(&CheckQueueSize));
-
-
-  Config::Connect("/NodeList/*/DeviceList/*/$ns3::CsmaNetDevice/MacTxBackoff", MakeCallback(&BackoffTrace));
 
   Config::Connect("/NodeList/*/ApplicationList/*/$ns3::UdpEchoClient/Tx", MakeCallback(&ClientTx));
   Config::Connect("/NodeList/*/ApplicationList/*/$ns3::UdpEchoClient/Rx", MakeCallback(&ClientRx));
