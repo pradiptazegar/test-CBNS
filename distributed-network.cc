@@ -80,7 +80,6 @@ main (int argc, char *argv[])
   csma2.SetChannelAttribute ("Delay", TimeValue (NanoSeconds (6560)));
   //Router 2 is on LAN 2, so we add it to the node container
   lan2_nodes.Add (router_nodes.Get (1));
-
   NetDeviceContainer lan2Devices;
   lan2Devices = csma2.Install (lan2_nodes);
 
