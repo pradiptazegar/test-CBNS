@@ -40,8 +40,8 @@ main (int argc, char *argv[])
 {
   CommandLine cmd;
 
-  uint32_t n1 = 4;
-  uint32_t n2 = 4;
+  uint32_t n1 = 10;
+  uint32_t n2 = 10;
 
   cmd.AddValue ("n1", "Number of LAN 1 nodes", n1);
   cmd.AddValue ("n2", "Number of LAN 2 nodes", n2);
@@ -113,7 +113,7 @@ main (int argc, char *argv[])
 
   uint16_t port = 9;
   OnOffHelper onoff("ns3:UdpSocketFactory",
-                    Address(InetSocketAddress (Ipv4Address (lan2_nodes.Get(6)), port)));
+                    Address(InetSocketAddress (Ipv4Address ("10.1.2.5"), port)));
   onoff.SetAttribute ("PacketSize", UintegerValue (10240));
   
   ApplicationContainer app = onoff.Install (lan1_nodes.Get (0));
