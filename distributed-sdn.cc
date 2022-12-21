@@ -112,7 +112,7 @@ main(int argc, char* argv[])
     uint16_t port = 9; // Discard port (RFC 863)
     OnOffHelper onoff ("ns3::UdpSocketFactory",
                    Address (InetSocketAddress (Ipv4Address (hosts.Get(6)), port)));
-    onoff.SetAttribute ("PacketSize", UintegerValue (packetSize));
+    onoff.SetAttribute ("PacketSize", UintegerValue (10240));
 
     // Install the OnOff application on Switch 0
     ApplicationContainer app = onoff.Install (hosts.Get (0));
