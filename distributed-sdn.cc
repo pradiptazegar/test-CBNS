@@ -105,17 +105,26 @@ main(int argc, char* argv[])
     ipv4.SetBase ("10.1.1.0", "255.255.255.0");
     ipv4.Assign (hostDevices);
     
-    
-    // Create an OnOff application to send UDP datagrams from n0 to n1.
-    uint16_t port = 9;   // Discard port (RFC 863)
-    OnOffHelper onoff ("ns3::TcpSocketFactory",
-                       Address (InetSocketAddress (Ipv4Address ("10.1.1.7"), port)));
-    onoff.SetConstantRate (DataRate ("10kb/s"));
-    ApplicationContainer app = onoff.Install (hosts.Get (0));
+    // Set the interval, packet size, and maximum number of packets
+    Time interval = MilliSeconds(200);
+    uint32_t packetSize = 10240;
+    uint32_t maxPackets = 100;
+
+    // Create an OnOffHelper to send UDP packets from Switch 0 to Switch 1
+    uint16_t port = 9; // Discard port (RFC 863)
+    OnOffHelper onoff ("ns3::UdpSocketFactory",
+                   Address (InetSocketAddress (Ipv4Address ("10.1.1.7"), port)));
+    onoff.SetAttribute ("Interval", TimeValue (interval));
+    onoff.SetAttribute ("PacketSize", UintegerValue (packetSize));
+    onoff.SetAttribute ("MaxPackets", UintegerValue (maxPackets));
+
+    // Install the OnOff application on Switch 0
+    ApplicationContainer app = onoff.Install (switches.Get (0));
+
     // Start the application
     app.Start (Seconds (1.0));
     app.Stop (Seconds (10.0));
-    
+        
     // Enable datapath stats and pcap traces at hosts, switch(es), and controller(s)
     if (trace)
     {
