@@ -105,9 +105,6 @@ main(int argc, char* argv[])
     ipv4.SetBase ("10.1.1.0", "255.255.255.0");
     ipv4.Assign (hostDevices);
     
-    // Set the interval, packet size, and maximum number of packets
-    uint32_t packetSize = 10240;
-
     // Create an OnOffHelper to send UDP packets from Switch 0 to Switch 1
     uint16_t port = 9; // Discard port (RFC 863)
     OnOffHelper onoff ("ns3::UdpSocketFactory",
