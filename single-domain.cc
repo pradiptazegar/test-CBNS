@@ -148,9 +148,11 @@ main(int argc, char* argv[])
     
     // Create an OnOff application to send UDP datagrams from n0 to n1.
     uint16_t port = 9;   // Discard port (RFC 863)
-    OnOffHelper onoff ("ns3::TcpSocketFactory",
-                       Address (InetSocketAddress (Ipv4Address ("10.1.1.4"), port)));
-    onoff.SetConstantRate (DataRate ("100kb/s"));
+    OnOffHelper onoff ("ns3::UdpSocketFactory",
+                       Address (InetSocketAddress (Ipv4Address ("10.1.1.7"), port)));
+    onoff.SetAttribute ("PacketSize", UintegerValue (10240));
+    
+    
     ApplicationContainer app = onoff.Install (hosts.Get (0));
     // Start the application
     app.Start (Seconds (1.0));
