@@ -106,20 +106,16 @@ main(int argc, char* argv[])
     ipv4.Assign (hostDevices);
     
     // Set the interval, packet size, and maximum number of packets
-    Time interval = MilliSeconds(200);
     uint32_t packetSize = 10240;
-    uint32_t maxPackets = 100;
 
     // Create an OnOffHelper to send UDP packets from Switch 0 to Switch 1
     uint16_t port = 9; // Discard port (RFC 863)
     OnOffHelper onoff ("ns3::UdpSocketFactory",
-                   Address (InetSocketAddress (Ipv4Address ("10.1.1.7"), port)));
-    onoff.SetAttribute ("Interval", TimeValue (interval));
+                   Address (InetSocketAddress (Ipv4Address (hosts.Get(6)), port)));
     onoff.SetAttribute ("PacketSize", UintegerValue (packetSize));
-    onoff.SetAttribute ("MaxPackets", UintegerValue (maxPackets));
 
     // Install the OnOff application on Switch 0
-    ApplicationContainer app = onoff.Install (switches.Get (0));
+    ApplicationContainer app = onoff.Install (hosts.Get (0));
 
     // Start the application
     app.Start (Seconds (1.0));
