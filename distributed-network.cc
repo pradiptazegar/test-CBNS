@@ -111,25 +111,15 @@ main (int argc, char *argv[])
   Ipv4InterfaceContainer routerInterfaces;
   routerInterfaces = address.Assign (routerDevices);
 
-  //Let's install a UdpEchoServer on all nodes of LAN2
-  UdpEchoServerHelper echoServer (9);
-  ApplicationContainer serverApps = echoServer.Install (lan2_nodes);
-  serverApps.Start (Seconds (0));
-  serverApps.Stop (Seconds (10));
-
-  //Let's create UdpEchoClients in all LAN1 nodes.
-  UdpEchoClientHelper echoClient (lan2interfaces.GetAddress (0), 9);
-  echoClient.SetAttribute ("MaxPackets", UintegerValue (100));
-  echoClient.SetAttribute ("Interval", TimeValue (MilliSeconds (200)));
-  echoClient.SetAttribute ("PacketSize", UintegerValue (10240));
-
-  //We'll install UdpEchoClient on two nodes in lan1 nodes
-  NodeContainer clientNodes (lan1_nodes.Get(0), lan1_nodes.Get(1));
-
-  ApplicationContainer clientApps = echoClient.Install (clientNodes);
-  clientApps.Start (Seconds (1));
-  clientApps.Stop (Seconds (10));
-
+  uint16_t port = 9;
+  OnOffHelper onoff("ns3:UdpSocketFactory",
+                    Address(InetSocketAddress (Ipv4Address (lan2_nodes.Get(6)), port)));
+  onoff.SetAttribute ("PacketSize", UintegerValue (10240));
+  
+  ApplicationContainer app = onoff.Install (lan1_nodes.Get (0));
+  app.Start (Seconds (1.0));
+  app.Stop (Seconds (10.0));
+  
   //For routers to be able to forward packets, they need to have routing rules.
   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
